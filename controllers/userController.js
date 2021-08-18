@@ -31,7 +31,7 @@ module.exports.signUp = asyncMiddleware(async (req, res) => {
   });
 
   // saving to database
-  const savedUser = await User.newUser(newUser);
+  const savedUser = await User.newContact(newUser);
   if (!savedUser) {
     return res.status(statusCodes.InternalServerError).json({
       error: "Something went wrong while saving.. try again later",

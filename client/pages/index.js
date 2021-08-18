@@ -96,6 +96,8 @@ const Home = () => {
             <Typography>PHONE: 07058149795</Typography>
             <Typography> GITHUB: https://github.com/gaiyadev </Typography>
           </Grid>
+          <br />
+
           {/* ADDRES */}
           <Grid
             container
@@ -110,6 +112,7 @@ const Home = () => {
             <Typography> ADDRESS: Kaduna, Nigeria.</Typography>
           </Grid>
           {/* profile */}
+          <br />
           <Grid item sm={12} md={12} xl={12}>
             <Box mt={12}>
               <Typography variant="h6" color="primary">
@@ -221,7 +224,6 @@ const Home = () => {
               <Typography variant="h6" color="primary">
                 SKILLS
               </Typography>
-              
               <ListItem>
                 <ListItemIcon>
                   Reactjs <br />

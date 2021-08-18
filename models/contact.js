@@ -6,18 +6,14 @@ const ContactSchema = new mongoose.Schema(
   {
     email: {
       type: String,
-      required: true,
       lowercase: true,
       minlength: 3,
       maxlength: 13,
-      unique: true,
     },
     subject: {
       type: String,
-      lowercase: true,
       minlength: 3,
       maxlength: 20,
-      unique: true,
     },
     body: {
       type: String,
@@ -39,11 +35,11 @@ module.exports = Contact;
  * VALIDATE INPUT
  *
  */
-module.exports.validateUserInput = (email, subject, body) => {
+module.exports.validateInput = (email, subject, body) => {
   const schema = Joi.object({
     subject: Joi.string().min(3).max(11).required().optional(),
-    email: Joi.string().min(5).max(255).required().email(),
-    body: Joi.string().min(6).max(255).required(),
+    email: Joi.string().min(2).max(255).required().email(),
+    body: Joi.string().min(4).max(255).required(),
   });
   const { error } = schema.validate({
     subject: subject,

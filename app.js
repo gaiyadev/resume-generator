@@ -19,6 +19,6 @@ app.use(express.static(path.join(__dirname, "public")));
 const version = "v1";
 app.use("/", indexRouter);
 app.use(`/api/${version}/users`, usersRouter);
-app.use(`/api/${version}/resumes`, resumesRouter);
+app.use(`/api/${version}/contact`, resumesRouter);
 
 module.exports = app;
