@@ -1,8 +1,8 @@
 const User = require("../models/user");
 const statusCodes = require("../statusCode/codes");
-
+const { asyncMiddleware } = require("../middleware/async");
 //  SIGN UP
-module.exports.signUp = async (req, res) => {
+module.exports.signUp = asyncMiddleware(async (req, res) => {
   const { username, email, password } = req.body;
 
   // Validating user data
@@ -43,23 +43,23 @@ module.exports.signUp = async (req, res) => {
     _id: savedUser._id,
     message: "Account created successfully",
   });
-};
+});
 
 // SIGN IN
-module.exports.signIn = async (req, res) => {
+module.exports.signIn = asyncMiddleware(async (req, res) => {
   const { email, password } = req.body;
-    let username = "testuser";
-    
+  let username = "testuser";
+
   // Validating user data
-    const checkErrors = await User.validateUserInput(username, email, password);
-    
+  const checkErrors = await User.validateUserInput(username, email, password);
+
   // Checking for errors
   if (checkErrors) {
     return res.status(statusCodes.BadRequest).json({
       error: checkErrors,
     });
   }
-  
+
   // Check if email exist
   const user = await User.getUserByEmail(email);
 
@@ -96,4 +96,101 @@ module.exports.signIn = async (req, res) => {
     message: "Login successfully",
     expiredIn: "accessTokenwill expired in 7d",
   });
-};
+});
+
+// Get user profile
+module.exports.fetchUser = asyncMiddleware(async (req, res) => {
+  const { _id } = req.user;
+  const user = await User.findOne({ _id: _id });
+  if (!user) {
+    return res.status(statusCodes.NotFound).json({
+      message: "User no found",
+    });
+  }
+  return res.status(statusCodes.Ok).json({
+    user: {
+      _id: user._id,
+      email: user.email,
+      username: user.username,
+    },
+  });
+});
+
+/** ===============================================================================================
+ * USER CHANGE PASSWORD
+ * ================================================================================================= *
+ */
+/**
+ *
+ * @param {*} req
+ * @param {*} res
+ */
+module.exports.ChangePassword = asyncMiddleware(async (req, res) => {
+  const { password, newPassword, comfirmNewPassword } = req.body;
+  const { _id } = req.user;
+
+  if (!_id) {
+    return res.status(statusCodes.NotFound).json({ error: "User not found" });
+  }
+
+  const checkErrors = await User.validatePasswordInput(
+    password,
+    newPassword,
+    comfirmNewPassword
+  );
+
+  // Checking for errors
+  if (checkErrors) {
+    return res.status(statusCodes.BadRequest).json({
+      error: checkErrors,
+    });
+  }
+
+  const checkUser = await User.getUserById(_id);
+
+  if (!checkUser) {
+    return res.status(statusCodes.NotFound).json({
+      error: "User not found",
+    });
+  }
+
+  // hasned password
+  const hash = checkUser.password;
+
+  // Check if password match
+  const isPasswordMatch = await User.comparePassword(password, hash);
+
+  if (!isPasswordMatch) {
+    return res.status(statusCodes.BadRequest).json({
+      error: "Current password is not correct",
+    });
+  }
+
+  // newPassword === confirmNewpassword
+  if (newPassword !== comfirmNewPassword) {
+    return res.status(statusCodes.BadRequest).json({
+      error: "New password is not equal to confirm password",
+    });
+  }
+  const newPasswordCheck = await User.comparePassword(
+    newPassword,
+    checkUser.password
+  );
+
+  if (newPasswordCheck) {
+    return res.status(statusCodes.BadRequest).json({
+      error: "New password can not be the same with the current password",
+    });
+  }
+
+  const savedPassword = await User.changePassword(newPassword, _id);
+  if (!savedPassword) {
+    return res.status(statusCodes.BadRequest).json({
+      error: "something went wrong. try again later",
+    });
+  }
+  // response
+  return res.status(statusCodes.created).json({
+    message: "Password changed successfully",
+  });
+});

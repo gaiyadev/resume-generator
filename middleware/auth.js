@@ -1,6 +1,6 @@
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
-const { Unauthorized } = require("../statusCodes/codes");
+const { Unauthorized } = require("../statusCode/codes");
 
 // CHECK IS USER IS AUTHENTICATED
 module.exports.isAuthenticated = async (req, res, next) => {

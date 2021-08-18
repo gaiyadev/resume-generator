@@ -181,3 +181,50 @@ module.exports.generateAccessToken = async (_id, email, username) => {
     throw err;
   }
 };
+
+// VALIDATE USER PASSWORD FOR UPDATE
+/**
+ *
+ * @param {*} password
+ * @param {*} newPassword
+ * @param {*} comfirmNewPassword
+ */
+module.exports.validatePasswordInput = (
+  password,
+  newPassword,
+  comfirmNewPassword
+) => {
+  const schema = Joi.object({
+    password: Joi.string().min(6).max(12).required(),
+    newPassword: Joi.string().min(6).max(12).required(),
+    comfirmNewPassword: Joi.string().min(6).max(12).required(),
+  });
+  const { error } = schema.validate({
+    password: password,
+    newPassword: newPassword,
+    comfirmNewPassword: comfirmNewPassword,
+  });
+  if (error) {
+    const errors = error.details[0].message;
+    return errors;
+  }
+};
+
+// UPDATE PASSWORD
+/**
+ *
+ * @param {*} newPassword
+ * @param {*} userId
+ */
+module.exports.changePassword = async (newPassword, userId) => {
+  try {
+    const user = await User.findByIdAndUpdate(userId);
+    if (!user) return;
+    const hash = await bcrypt.hash(newPassword, 12);
+    user.password = hash; //set hash password
+    const savedPassword = await user.save();
+    return savedPassword;
+  } catch (err) {
+    throw err;
+  }
+};
