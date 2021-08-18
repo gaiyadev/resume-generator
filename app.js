@@ -2,6 +2,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
+require("./database/db");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/api/users");
@@ -17,7 +18,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const version = "v1";
 app.use("/", indexRouter);
-app.use(`api/${version}/users`, usersRouter);
-app.use(`api/${version}/resumes`, resumesRouter);
+app.use(`/api/${version}/users`, usersRouter);
+app.use(`/api/${version}/resumes`, resumesRouter);
 
 module.exports = app;
