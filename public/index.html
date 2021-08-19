@@ -417,7 +417,8 @@ const data = {
       })
         .then(response => response.json())
         .then(json => {
-          alert("Submitted successfully")
+          const message = res.message
+          alert(message)
           console.log(json)
         })
         .catch (err => console.log(err));
