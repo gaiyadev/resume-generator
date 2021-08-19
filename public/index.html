@@ -397,6 +397,34 @@
   </div>
 </div>
 
+<script>
+const sumbit = (event)=> {
+  event.preventDefault()
+let email = document.getElementById('email').value;
+let subject = document.getElementById('subject').value;
+let body = document.getElementById('body').value;
+const data = {
+  email,
+  body,
+  subject
+}
+
+
+  fetch('/api/v1/contact', {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: { "Content-type": "application/json; charset=UTF-8" }
+      })
+        .then(response => response.json())
+        .then(json => {
+          alert("Submitted successfully")
+          console.log(json.data)
+        })
+        .catch (err => console.log(err));
+}
+
+</script>
+
 <div class="section" id="contact">
   <div class="cc-contact-information" style="background-image: url('resume/images/staticmap.png')">
     <div class="container">
@@ -408,39 +436,39 @@
               <div class="row">
                 <div class="col-md-6">
                   <div class="card-body">
-                    <form action="" onsubmit="sumbit(e)" method="POST">
+                    <form onsubmit="sumbit(event)" id="form-id">
                       <div class="p pb-3"><strong>Feel free to contact me </strong></div>
-                      <div class="row mb-3">
+                      <!-- <div class="row mb-3">
                         <div class="col">
                           <div class="input-group"><span class="input-group-addon"><i class="fa fa-user-circle"></i></span>
                             <input class="form-control" type="text" name="name" placeholder="Name" required="required"/>
                           </div>
                         </div>
-                      </div>
+                      </div> -->
                       <div class="row mb-3">
                         <div class="col">
                           <div class="input-group"><span class="input-group-addon"><i class="fa fa-file-text"></i></span>
-                            <input class="form-control" type="text" name="Subject" placeholder="Subject" required="required"/>
+                            <input class="form-control" type="text" name="subject" placeholder="Subject" id="subject" required="required"/>
                           </div>
                         </div>
                       </div>
                       <div class="row mb-3">
                         <div class="col">
                           <div class="input-group"><span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                            <input class="form-control" type="email" name="_replyto" placeholder="E-mail" required="required"/>
+                            <input class="form-control" type="email" name="_replyto" placeholder="E-mail" id="email" name="email" required="required"/>
                           </div>
                         </div>
                       </div>
                       <div class="row mb-3">
                         <div class="col">
                           <div class="form-group">
-                            <textarea class="form-control" name="message" placeholder="Your Message" required="required"></textarea>
+                            <textarea class="form-control" name="body" placeholder="Your Message"  id="body" required="required"></textarea>
                           </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col">
-                          <button class="btn btn-primary" type="submit">Send</button>
+                          <button   type="submit"  id="your-id   class="btn btn-primary" type="submit">Send</button>
                         </div>
                       </div>
                     </form>
