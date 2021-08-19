@@ -401,16 +401,17 @@
               API CALL TO MY BACKEND SERVER
 ==============================-->
 <script>
-const sumbit = (event)=> {
-  event.preventDefault()
-let email = document.getElementById('email').value;
-let subject = document.getElementById('subject').value;
-let body = document.getElementById('body').value;
-const data = {
-  email,
-  body,
-  subject
-}
+    const sumbit = (event)=> {
+      event.preventDefault()
+    let email = document.getElementById('email').value;
+    let subject = document.getElementById('subject').value;
+    let body = document.getElementById('body').value;
+    
+    const data = {
+      email,
+      body,
+      subject
+    }
 
   fetch('/api/v1/contact', {
         method: "POST",
@@ -420,7 +421,6 @@ const data = {
         .then(response => response.json())
         .then(json => {
           const message = json.message
-          // alert(message)
           document.getElementById('display').innerHTML = message
           console.log(json)
         })
