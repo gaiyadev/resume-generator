@@ -417,7 +417,7 @@ const data = {
       })
         .then(response => response.json())
         .then(json => {
-          const message = res.message
+          const message = json.message
           alert(message)
           console.log(json)
         })
