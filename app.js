@@ -20,7 +20,7 @@ const version = "v1";
 //app.use("/", indexRouter);
 app.get("/", (req, res) => {
   res.sendFile(
-    path.resolve(__dirname, "client", "/next/server/pages/", "index.html")
+    path.resolve(__dirname, "client", "/pages/", "index.html")
   );
 });
 
