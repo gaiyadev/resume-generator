@@ -18,6 +18,12 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const version = "v1";
 //app.use("/", indexRouter);
+app.get("/", (req, res) => {
+  res.sendFile(
+    path.resolve(__dirname, "client", "/next/server/pages/", "index.html")
+  );
+});
+
 app.use(`/api/${version}/users`, usersRouter);
 app.use(`/api/${version}/contact`, resumesRouter);
 
