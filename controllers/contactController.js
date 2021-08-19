@@ -29,6 +29,6 @@ module.exports.contact = asyncMiddleware(async (req, res) => {
   //  send response to the client
   return res.status(statusCodes.created).json({
     _id: savedUser._id,
-    message: "Message Send successfully",
+    message: "Message sent successfully",
   });
 });
