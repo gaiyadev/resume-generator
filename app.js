@@ -18,15 +18,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 const version = "v1";
 app.use("/", indexRouter);
-
 app.use(`/api/${version}/users`, usersRouter);
 app.use(`/api/${version}/contact`, resumesRouter);
-
-// if (process.env.NODE_ENV === "production") {
-//   app.use(express.static("/client/server/pages/index.html"));
-//   app.get("/", (req, res) => {
-//     res.sendFile(path.resolve(__dirname, "client", "/next/", "index.html"));
-//   });
-// }
 
 module.exports = app;
